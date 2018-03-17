@@ -1,5 +1,5 @@
 # swarmprom
-[![Documentation](https://godoc.org/github.com/faryon93/swarmprom?status.svg)](http://godoc.org/godoc.org/github.com/faryon93/swarmprom)
+[![Documentation](https://godoc.org/github.com/faryon93/swarmprom?status.svg)](http://godoc.org/github.com/faryon93/swarmprom)
 [![Go Report Card](https://goreportcard.com/badge/github.com/faryon93/swarmprom)](https://goreportcard.com/report/github.com/faryon93/swarmprom)
 
 This library provides a secure way to expose the [Prometheus](https://prometheus.io) metrics http handler in a docker swarm environment.
