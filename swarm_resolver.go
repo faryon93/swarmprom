@@ -21,7 +21,7 @@ package swarmprom
 // ---------------------------------------------------------------------------------------
 
 import (
-    "net"
+	"net"
 )
 
 // ---------------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ import (
 
 // Resolver for swarm service tasks.
 type swarmResolver struct {
-    cache map[string][]string
+	cache map[string][]string
 }
 
 // ---------------------------------------------------------------------------------------
@@ -39,19 +39,19 @@ type swarmResolver struct {
 
 // Returns the IP addresses of all containers beloning to the given service.
 func (s *swarmResolver) GetServiceIps(service string) ([]string, error) {
-    if s.cache == nil {
-        s.cache = make(map[string][]string)
-    }
+	if s.cache == nil {
+		s.cache = make(map[string][]string)
+	}
 
-    list, err := net.LookupHost("tasks." + service)
-    if err != nil {
-        list = s.cache[service]
-        if list == nil {
-            return nil, err
-        }
-    } else {
-        s.cache[service] = list
-    }
+	list, err := net.LookupHost("tasks." + service)
+	if err != nil {
+		list = s.cache[service]
+		if list == nil {
+			return nil, err
+		}
+	} else {
+		s.cache[service] = list
+	}
 
-    return list, nil
+	return list, nil
 }

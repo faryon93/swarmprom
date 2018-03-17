@@ -48,12 +48,13 @@ var (
 //  public functions
 // ---------------------------------------------------------------------------------------
 
-// Sets the new logger with should be used with
+// SetLogger sets the new logger with should be used with.
 func SetLogger(newLogger *logrus.Entry) {
 	logger = newLogger
 }
 
-// Sets the http handler which is executed when the access is restricted.
+// SetRejectHandler sets the HTTP handler which is
+// executed when the access is restricted.
 func SetRejectHandler(fn http.HandlerFunc) {
 	if fn == nil {
 		return
@@ -62,7 +63,7 @@ func SetRejectHandler(fn http.HandlerFunc) {
 	rejectHandler = fn
 }
 
-// Returns a prometheus http hander which can be accessed
+// Handler returns a prometheus http hander which can be accessed
 // by containers of the given service only.
 func Handler(service string) http.Handler {
 	resolver := swarmResolver{}
@@ -111,7 +112,8 @@ func Handler(service string) http.Handler {
 	})
 }
 
-// The default reject handler returns a "forbidden" message with code 403.
+// DefaultRejectHandler is the standard reject handler.
+// It returns a "forbidden" message with code 403.
 func DefaultRejectHandler(w http.ResponseWriter, r *http.Request) {
 	http.Error(w, "forbidden", http.StatusForbidden)
 }
