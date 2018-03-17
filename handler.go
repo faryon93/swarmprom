@@ -65,9 +65,21 @@ func SetRejectHandler(fn http.HandlerFunc) {
 
 // Handler returns a prometheus http hander which can be accessed
 // by containers of the given service only.
+// If the supplied name is empty the access control is bypassed
+// an a warning is printed through the logger.
 func Handler(service string) http.Handler {
 	resolver := swarmResolver{}
 	handler := promhttp.Handler()
+
+	// if an empty service name is supplied
+	// bypass the swarm service access control.
+	if service == "" {
+		if logger != nil {
+			logger.Warnln("PROMETHEUS METRIC ENDPOINT ACCESS CONTROL IS BYPASSED")
+		}
+
+		return handler
+	}
 
 	// construct the middleware handler function
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
