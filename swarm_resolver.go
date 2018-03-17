@@ -29,7 +29,7 @@ import (
 // ---------------------------------------------------------------------------------------
 
 // Resolver for swarm service tasks.
-type SwarmResolver struct {
+type swarmResolver struct {
     cache map[string][]string
 }
 
@@ -38,7 +38,7 @@ type SwarmResolver struct {
 // ---------------------------------------------------------------------------------------
 
 // Returns the IP addresses of all containers beloning to the given service.
-func (s *SwarmResolver) GetServiceIps(service string) ([]string, error) {
+func (s *swarmResolver) GetServiceIps(service string) ([]string, error) {
     if s.cache == nil {
         s.cache = make(map[string][]string)
     }

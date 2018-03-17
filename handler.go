@@ -65,7 +65,7 @@ func SetRejectHandler(fn http.HandlerFunc) {
 // Returns a prometheus http hander which can be accessed
 // by containers of the given service only.
 func Handler(service string) http.Handler {
-	resolver := SwarmResolver{}
+	resolver := swarmResolver{}
 	handler := promhttp.Handler()
 
 	// construct the middleware handler function
