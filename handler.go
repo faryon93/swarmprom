@@ -67,13 +67,13 @@ func SetRejectHandler(fn http.HandlerFunc) {
 // by containers of the given service only.
 // If the supplied name is empty the access control is bypassed
 // an a warning is printed through the logger.
-func Handler(service string) http.Handler {
+func Handler(services ...string) http.Handler {
 	resolver := swarmResolver{}
 	handler := promhttp.Handler()
 
-	// if an empty service name is supplied
-	// bypass the swarm service access control.
-	if service == "" {
+	// if an empty services name is supplied
+	// bypass the swarm services access control.
+	if len(services) == 0 || services[0] == "" {
 		if logger != nil {
 			logger.Warnln("PROMETHEUS METRIC ENDPOINT ACCESS CONTROL IS BYPASSED")
 		}
@@ -95,15 +95,16 @@ func Handler(service string) http.Handler {
 			log = logger.WithField("addr", remote)
 		}
 
-		// resolve all container ips of the given service
+		// resolve all container ips of the given services
 		validationError := errors.New("not on swarm service list")
-		allowedIps, err := resolver.GetServiceIps(service)
-		if err != nil {
-			validationError = err
-		} else {
-			// the calling client must be on the white list
-			for _, ip := range allowedIps {
-				if ip == remote {
+		for _, service := range services {
+			allowedIps, err := resolver.GetServiceIps(service)
+			if err != nil {
+				validationError = err
+				break
+			} else {
+				// the calling client must be on the white list
+				if allowedIps.Contains(remote) {
 					validationError = nil
 					break
 				}

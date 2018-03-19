@@ -33,12 +33,15 @@ type swarmResolver struct {
 	cache map[string][]string
 }
 
+// A list of IP addresses.
+type ipList []string
+
 // ---------------------------------------------------------------------------------------
 //  public functions
 // ---------------------------------------------------------------------------------------
 
 // Returns the IP addresses of all containers beloning to the given service.
-func (s *swarmResolver) GetServiceIps(service string) ([]string, error) {
+func (s *swarmResolver) GetServiceIps(service string) (ipList, error) {
 	if s.cache == nil {
 		s.cache = make(map[string][]string)
 	}
@@ -54,4 +57,15 @@ func (s *swarmResolver) GetServiceIps(service string) ([]string, error) {
 	}
 
 	return list, nil
+}
+
+// Contains returns true if the given ip is on this list.
+func (l ipList) Contains(ip string) bool {
+	for _, haystack := range l {
+		if ip == haystack {
+			return true
+		}
+	}
+
+	return false
 }
